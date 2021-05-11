@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/codecups
+    username: ENC(wXLb7bMIG19ZVSWMM2jbSFfEA0OJ9ftNXdI2GJTCbA1qrgiYYF9tpqtyp+7W6CWs)
+    password: ENC(1rZvINAZlQmKsXRZO3f969BVX+qq0w5AWm10e+bFbmzKGuBq4ZzN7UC0KMvquQc/)
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(t6G05qDSdXsxZkrhV8uLT8g5QoqvZpc/tTN6y6XgHEcr1+s/sks6OATcvoqV4n2Z7FACq+1PCPSmEWL4lgdIGA==)
+    password: ENC(IY7F8a34M1Qpqm0GUXJzZWNy+/bN9BlL8QDVFKYInBz1K3R5R/5LJKDa1EkHK7ki)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            trust: smtp.gmail.com
+          starttls:
+            enable: true
+            require: true
+    protocol: smtp
+jasypt:
+  encryptor:
+    algorithm: PBEWITHHMACSHA512ANDAES_256
+    password: Secret123!
+server:
+  error:
+    include-message: always
