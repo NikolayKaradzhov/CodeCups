@@ -1,12 +1,12 @@
 package com.codecups.app.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Copyright CodeCups
@@ -16,7 +16,11 @@ import javax.persistence.Id;
 @Entity (name = "products")
 @Getter
 @Setter
-public class Product {
+public class Product implements Serializable {
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private static final long serialVersionUID = -4157715894287389876L;
 
     @Id
     @GeneratedValue
@@ -31,6 +35,12 @@ public class Product {
     private double price;
 
     private String image;
+
+    @ManyToMany
+    @JoinTable(name = "products_orders",
+            joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")})
+    private List<Order> orders;
 }
 
 

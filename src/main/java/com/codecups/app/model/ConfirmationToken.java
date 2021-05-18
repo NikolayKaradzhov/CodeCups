@@ -1,10 +1,12 @@
 package com.codecups.app.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -12,11 +14,15 @@ import java.time.LocalDateTime;
  * Created by Niko on 29 April 2021
  */
 
-@Entity
+@Entity(name = "confirmation_tokens")
 @Getter
 @Setter
 @NoArgsConstructor
-public class ConfirmationToken {
+public class ConfirmationToken implements Serializable {
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private static final long serialVersionUID = 3995783163959315850L;
 
     @Id
     @GeneratedValue

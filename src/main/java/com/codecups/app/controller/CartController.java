@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping(path = "v0/cart") //http://localhost:8080/v0/cart
+@RequestMapping(path = "/v0/cart") //http://localhost:8080/v0/cart
 public class CartController {
 
     //updateCart()

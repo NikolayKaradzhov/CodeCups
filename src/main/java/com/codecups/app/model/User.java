@@ -1,13 +1,16 @@
 package com.codecups.app.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,11 +25,16 @@ import java.util.List;
 @NoArgsConstructor
 public class User implements UserDetails {
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = -7772031733985986297L;
 
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column(nullable = false)
+    private String userId;
 
     @Column(nullable = false, length = 50)
     private String firstName;
@@ -42,7 +50,7 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany
-    @JoinTable(name = "user_roles",
+    @JoinTable(name = "users_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
@@ -50,10 +58,13 @@ public class User implements UserDetails {
     private String address;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean locked;
+    private boolean isLocked;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean enabled;
+    private boolean isEnabled;
+
+    @Column
+    private LocalDateTime createdAt;
 
     public User(String firstName,
                 String lastName,

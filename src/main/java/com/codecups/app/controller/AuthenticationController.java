@@ -1,16 +1,17 @@
 package com.codecups.app.controller;
 
-import com.codecups.app.security.util.JwtUtil;
-import com.codecups.app.service.UserServiceImpl;
-import com.codecups.app.web.model.request.AuthenticationRequest;
+import com.codecups.app.service.AuthenticationService;
+import com.codecups.app.web.enums.RequestOperationName;
+import com.codecups.app.web.enums.RequestOperationStatus;
+import com.codecups.app.web.model.request.LoginRequest;
+import com.codecups.app.web.model.request.PasswordResetRequest;
 import com.codecups.app.web.model.response.AuthenticationResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.codecups.app.web.model.response.OperationStatus;
+import lombok.AllArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,31 +23,32 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping(path = "v0/authenticate") //http://localhost:8080/v0/authenticate
+@AllArgsConstructor
+@RequestMapping(path = "/v0/authenticate") //http://localhost:8080/v0/authenticate
 public class AuthenticationController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    UserServiceImpl userServiceImpl;
-
-    @Autowired
-    JwtUtil jwtTokenUtil;
+    private final AuthenticationService authenticationService;
 
     @PostMapping
-    public ResponseEntity createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
-        try {
-            authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
-                                                                          authenticationRequest.getPassword()));
-        } catch (BadCredentialsException bce) {
-            throw new IllegalStateException("Incorrect username or password", bce);
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
+        AuthenticationResponse authenticationResponse = authenticationService.login(loginRequest);
+
+        return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/password-reset")
+    public ResponseEntity<OperationStatus> passwordReset(@RequestBody PasswordResetRequest passwordResetRequest) {
+        OperationStatus returnValue = new OperationStatus();
+
+        boolean operationResult = authenticationService.resetPassword(passwordResetRequest);
+
+        returnValue.setOperationName(RequestOperationName.REQUEST_PASSWORD_RESET.name());
+        returnValue.setOperationResult(RequestOperationStatus.ERROR.name());
+
+        if (operationResult) {
+            returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
         }
 
-        final UserDetails userDetails = userServiceImpl.loadUserByUsername(authenticationRequest.getEmail());
-        final String jwtToken = jwtTokenUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwtToken));
+        return new ResponseEntity<>(returnValue, HttpStatus.OK);
     }
 }

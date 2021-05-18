@@ -5,8 +5,7 @@ import com.codecups.app.email.MailConstant;
 
 import lombok.AllArgsConstructor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,10 +21,10 @@ import javax.mail.internet.MimeMessage;
  */
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class EmailService implements EmailSender {
     private final JavaMailSender mailSender;
-    private final static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 
     @Override
     @Async
@@ -33,8 +32,9 @@ public class EmailService implements EmailSender {
         try {
             MimeMessage mimeMessage = prepareMimeMessage(to, email);
             mailSender.send(mimeMessage);
+            log.info("Mail sent successfully");
         } catch (MessagingException me) {
-            LOGGER.error("Failed to send email", me);
+            log.error("Failed to send email", me);
             throw new IllegalStateException("Sending email failed");
         }
     }
@@ -45,7 +45,12 @@ public class EmailService implements EmailSender {
 
         messageHelper.setText(email, true);
         messageHelper.setTo(to);
-        messageHelper.setSubject(MailConstant.EMAIL_SUBJECT);
+        if (email.contains("Registration")) {
+            messageHelper.setSubject(MailConstant.CONFIRM_EMAIL_SUBJECT);
+        } else {
+            messageHelper.setSubject(MailConstant.PASSWORD_RESET_SUBJECT);
+        }
+
         messageHelper.setFrom(MailConstant.SENDER);
 
         return mimeMessage;

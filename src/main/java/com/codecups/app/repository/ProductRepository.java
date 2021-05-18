@@ -3,6 +3,7 @@ package com.codecups.app.repository;
 import com.codecups.app.model.Product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,6 +12,6 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
     Product findByName(String productName);
 }

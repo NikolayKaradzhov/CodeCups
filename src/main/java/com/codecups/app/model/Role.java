@@ -1,5 +1,7 @@
 package com.codecups.app.model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import java.util.List;
  */
 
 @Entity
+@Getter
 @Table(name = "roles")
 public class Role {
 

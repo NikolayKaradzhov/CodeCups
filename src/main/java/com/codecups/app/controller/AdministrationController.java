@@ -1,16 +1,26 @@
 package com.codecups.app.controller;
 
+import com.codecups.app.dto.ProductDto;
+import com.codecups.app.dto.UserDto;
 import com.codecups.app.model.Product;
 import com.codecups.app.service.base.StoreService;
 import com.codecups.app.service.base.UserService;
+import com.codecups.app.web.enums.RequestOperationName;
+import com.codecups.app.web.enums.RequestOperationStatus;
 import com.codecups.app.web.model.request.OrderRequest;
 import com.codecups.app.web.model.request.ProductRequest;
 import com.codecups.app.web.model.request.UserRequest;
 
+import com.codecups.app.web.model.response.OperationStatus;
+import com.codecups.app.web.model.response.ProductRest;
+import com.codecups.app.web.model.response.UserRest;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,22 +30,37 @@ import java.util.Optional;
  */
 
 @RestController
-@RequestMapping(path = "v0/administration") //http://localhost:8080/v0/administration
+@AllArgsConstructor
+@RequestMapping(path = "/v0/administration") //http://localhost:8080/v0/administration
 public class AdministrationController {
 
-    private UserService userService;
-    private StoreService productService;
-
+    private final UserService userService;
+    private final StoreService productService;
 
     //USERS
     @GetMapping(path = "/users")
-    public String getAllUsers() {
-        return "getAllUsers() was called";
+    public ResponseEntity<List<UserRest>> getAllUsers(@RequestParam (value = "page", defaultValue = "1") int page,
+                                      @RequestParam (value = "limit", defaultValue = "25") int limit) {
+        List<UserRest> returnedUsers = new ArrayList<>();
+        List<UserDto> users = userService.getUsers(page, limit);
+
+        for (UserDto userDto : users) {
+            UserRest userModel = new UserRest();
+            BeanUtils.copyProperties(userDto, userModel);
+            returnedUsers.add(userModel);
+        }
+
+        return new ResponseEntity<>(returnedUsers, HttpStatus.OK);
     }
 
     @GetMapping(path = "/users/{userId}")
-    public String getUser(@PathVariable (name = "userId") Long userId) {
-        return "getUser() was called";
+    public ResponseEntity<UserRest> getUser(@PathVariable (name = "userId") String userId) {
+        UserRest returnedUser = new UserRest();
+
+        UserDto userDto = userService.getUserByUserId(userId);
+        BeanUtils.copyProperties(userDto, returnedUser);
+
+        return new ResponseEntity<>(returnedUser, HttpStatus.OK);
     }
 
     @PutMapping(path = "/users/{userId}")
@@ -44,14 +69,24 @@ public class AdministrationController {
     }
 
     @DeleteMapping(path = "/users/{userId}")
-    public String deleteUser(@PathVariable Long userId) {
-        return "deleteUser was called";
+    public ResponseEntity<OperationStatus> deleteUser(@PathVariable String userId) {
+        OperationStatus returnValue = new OperationStatus();
+
+        returnValue.setOperationName(RequestOperationName.DELETE.name());
+
+        userService.deleteByUserId(userId);
+
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return new ResponseEntity<>(returnValue, HttpStatus.OK);
     }
 
     //ORDERS
     @GetMapping(path = "/orders")
-    public String getAllOrders() {
-        return "getAllOrders() was called";
+    public String getAllOrders(@RequestParam (value = "page", defaultValue = "1") int page,
+                               @RequestParam (value = "limit", defaultValue = "25") int limit) {
+
+        return "getAllOrders called";
     }
 
     @GetMapping(path = "/orders/{orderId}")
@@ -76,17 +111,24 @@ public class AdministrationController {
     }
 
     @GetMapping(path = "/products")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAll();
+    public ResponseEntity<List<ProductRest>> getAllProducts(@RequestParam (value = "page", defaultValue = "1") int page,
+                                                        @RequestParam (value = "limit", defaultValue = "25") int limit) {
 
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        List<ProductRest> returnedProducts = new ArrayList<>();
+        List<ProductDto> products = productService.getProducts(page, limit);
+
+        for (ProductDto productDto : products) {
+            ProductRest productResponseModel = new ProductRest();
+            BeanUtils.copyProperties(productDto, productResponseModel);
+            returnedProducts.add(productResponseModel);
+        }
+
+        return new ResponseEntity<>(returnedProducts, HttpStatus.OK);
     }
 
     @GetMapping(path = "/products/{productId}")
-    public ResponseEntity<Optional<Product>> getProduct(@PathVariable Long productId) {
-        Optional<Product> product = productService.findById(productId);
-
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    public String getProduct(@PathVariable Long productId) {
+        return "getProduct called";
     }
 
     @PutMapping(path = "/products/{productId}")
@@ -96,7 +138,6 @@ public class AdministrationController {
 
     @DeleteMapping(path = "/products/{productId}")
     public String deleteProduct(@PathVariable Long productId) {
-        productService.delete(productId);
 
         return "deleted";
     }

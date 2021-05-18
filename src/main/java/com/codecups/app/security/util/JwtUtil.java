@@ -1,15 +1,21 @@
 package com.codecups.app.security.util;
 
+import com.codecups.app.model.Role;
+import com.codecups.app.model.User;
 import com.codecups.app.security.SecurityConstants;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 /**
@@ -60,5 +66,13 @@ public class JwtUtil {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, SecurityConstants.TOKEN_SECRET_KEY).compact();
+    }
+
+    private List<String> getRoleNames(List<Role> userRoles) {
+        List<String> result = new ArrayList<>();
+
+        userRoles.forEach(role -> result.add(role.getName()));
+
+        return result;
     }
 }

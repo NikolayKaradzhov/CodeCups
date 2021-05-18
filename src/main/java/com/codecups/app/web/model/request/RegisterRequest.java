@@ -10,8 +10,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserRegistrationRequest {
-
+public class RegisterRequest {
     private final String firstName;
     private final String lastName;
     private final String email;

@@ -2,6 +2,7 @@ package com.codecups.app.web.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Copyright CodeCups
@@ -10,6 +11,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class AuthenticationResponse {
-    private final String jwt;
+    private String authenticationToken;
+    private String username;
 }

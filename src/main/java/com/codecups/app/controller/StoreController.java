@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping(path = "v0/store") //http://localhost:8080/v0/store
+@RequestMapping(path = "/v0/store") //http://localhost:8080/v0/store
 @AllArgsConstructor
 public class StoreController {
 
