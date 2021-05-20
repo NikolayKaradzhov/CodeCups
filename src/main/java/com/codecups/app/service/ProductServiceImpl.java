@@ -1,13 +1,13 @@
 package com.codecups.app.service;
 
 import com.codecups.app.dto.ProductDto;
-import com.codecups.app.dto.UserDto;
 import com.codecups.app.model.Product;
-import com.codecups.app.model.User;
 import com.codecups.app.repository.ProductRepository;
-import com.codecups.app.service.base.StoreService;
+import com.codecups.app.service.base.ProductService;
+import com.codecups.app.web.model.request.ProductRequest;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Copyright CodeCups
@@ -26,8 +25,9 @@ import java.util.Optional;
  */
 
 @Service
+@Slf4j
 @AllArgsConstructor
-public class StoreServiceImpl implements StoreService {
+public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private final ProductRepository productRepository;
@@ -47,6 +47,35 @@ public class StoreServiceImpl implements StoreService {
             returnedProducts.add(productDto);
         }
 
+        log.info("IN getProducts() - products loaded successfully");
+
         return returnedProducts;
+    }
+
+    @Override
+    public ProductDto addProduct(ProductRequest product) {
+        return null;
+    }
+
+    @Override
+    public ProductDto getProduct(String productId) {
+        return null;
+    }
+
+    @Override
+    public void updateProduct(ProductRequest productRequest) {
+
+    }
+
+    @Override
+    public void deleteProduct(String productId) {
+        Product product = productRepository.findByProductId(productId);
+        if (product == null) {
+            throw new RuntimeException("Product not found");
+        }
+
+        productRepository.delete(product);
+
+        log.info("IN deleteProduct() - product {} deleted successfully", product.getName());
     }
 }

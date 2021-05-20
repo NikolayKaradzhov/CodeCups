@@ -8,9 +8,11 @@ import com.codecups.app.model.User;
 import com.codecups.app.repository.UserRepository;
 import com.codecups.app.security.util.PublicIdGenerator;
 import com.codecups.app.service.base.ConfirmationTokenService;
+import com.codecups.app.service.base.RegistrationService;
 import com.codecups.app.web.model.request.RegisterRequest;
 
 import lombok.AllArgsConstructor;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class RegistrationServiceImpl {
+public class RegistrationServiceImpl implements RegistrationService {
 
     private final ConfirmationTokenService confirmationTokenService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -33,6 +35,7 @@ public class RegistrationServiceImpl {
     private final EmailSender mailSender;
     private final PublicIdGenerator publicIdGenerator;
 
+    @Override
     public String register(RegisterRequest registerRequest) {
 
         boolean isValidEmail = emailValidator.test(registerRequest.getEmail());
@@ -79,7 +82,7 @@ public class RegistrationServiceImpl {
                 LocalDateTime.now().plusMinutes(15),
                 user);
 
-        confirmationTokenService.saveConfirmationTokenToken(confirmationToken);
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
 
         return token;
     }

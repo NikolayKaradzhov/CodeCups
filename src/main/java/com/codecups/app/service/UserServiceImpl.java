@@ -7,6 +7,7 @@ import com.codecups.app.service.base.UserService;
 
 import lombok.AllArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -34,15 +36,18 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(true);
 
         userRepository.save(user);
+        log.info("IN enableUser() - user with email {} saved", email);
     }
 
     @Override
-    public UserDto getUserByUserId(String id) {
+    public UserDto getUserByUserId(String userId) {
         UserDto returnedUser = new UserDto();
 
         User user = userRepository
-                .findByUserId(id)
+                .findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found."));
+
+        log.info("IN getUserByUserId() - user with {} id found", user.getEmail());
 
         BeanUtils.copyProperties(user, returnedUser);
         return returnedUser;
@@ -55,6 +60,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("User not found."));
 
         userRepository.delete(user);
+        log.info("IN deleteUser() - user {} deleted", user.getEmail());
     }
 
     @Override
@@ -71,6 +77,8 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(user, userDto);
             returnedUsers.add(userDto);
         }
+
+        log.info("IN getUsers() - users loaded successfully");
 
         return returnedUsers;
     }

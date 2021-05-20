@@ -1,17 +1,18 @@
 package com.codecups.app.controller;
 
+import com.codecups.app.dto.OrderDto;
 import com.codecups.app.dto.ProductDto;
 import com.codecups.app.dto.UserDto;
-import com.codecups.app.model.Product;
-import com.codecups.app.service.base.StoreService;
+import com.codecups.app.service.base.OrderService;
+import com.codecups.app.service.base.ProductService;
 import com.codecups.app.service.base.UserService;
 import com.codecups.app.web.enums.RequestOperationName;
 import com.codecups.app.web.enums.RequestOperationStatus;
 import com.codecups.app.web.model.request.OrderRequest;
 import com.codecups.app.web.model.request.ProductRequest;
-import com.codecups.app.web.model.request.UserRequest;
 
 import com.codecups.app.web.model.response.OperationStatus;
+import com.codecups.app.web.model.response.OrderRest;
 import com.codecups.app.web.model.response.ProductRest;
 import com.codecups.app.web.model.response.UserRest;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Copyright CodeCups
@@ -35,7 +35,8 @@ import java.util.Optional;
 public class AdministrationController {
 
     private final UserService userService;
-    private final StoreService productService;
+    private final ProductService productService;
+    private final OrderService orderService;
 
     //USERS
     @GetMapping(path = "/users")
@@ -63,10 +64,10 @@ public class AdministrationController {
         return new ResponseEntity<>(returnedUser, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/users/{userId}")
-    public String updateUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
-        return "updateUser() was called";
-    }
+//    @PutMapping(path = "/users/{userId}")
+//    public String updateUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
+//        return "updateUser() was called";
+//    }
 
     @DeleteMapping(path = "/users/{userId}")
     public ResponseEntity<OperationStatus> deleteUser(@PathVariable String userId) {
@@ -83,31 +84,66 @@ public class AdministrationController {
 
     //ORDERS
     @GetMapping(path = "/orders")
-    public String getAllOrders(@RequestParam (value = "page", defaultValue = "1") int page,
-                               @RequestParam (value = "limit", defaultValue = "25") int limit) {
+    public ResponseEntity<List<OrderRest>> getAllOrders(@RequestParam (value = "page", defaultValue = "1") int page,
+                                                        @RequestParam (value = "limit", defaultValue = "25") int limit) {
 
-        return "getAllOrders called";
+        List<OrderRest> returnedOrders = new ArrayList<>();
+        List<OrderDto> orders = orderService.getOrders(page, limit);
+
+        for (OrderDto orderDto : orders) {
+            OrderRest order = new OrderRest();
+            BeanUtils.copyProperties(orderDto, order);
+            returnedOrders.add(order);
+        }
+
+        return new ResponseEntity<>(returnedOrders, HttpStatus.OK);
     }
 
     @GetMapping(path = "/orders/{orderId}")
-    public String getOrder() {
-        return "getOrder() was called";
+    public ResponseEntity<OrderRest> getOrder(@PathVariable String orderId) {
+        OrderRest returnedOrder = new OrderRest();
+        OrderDto orderDto = orderService.getOrder(orderId);
+
+        BeanUtils.copyProperties(orderDto, returnedOrder);
+
+        return new ResponseEntity<>(returnedOrder, HttpStatus.OK);
     }
 
     @PutMapping(path = "/orders/{orderId}")
-    public String updateOrder(@PathVariable Long orderId, @RequestBody OrderRequest orderRequest) {
-        return "updateOrder() was called";
+    public ResponseEntity<OperationStatus> updateOrder(@PathVariable Long orderId, @RequestBody OrderRequest orderRequest) {
+        OperationStatus returnValue = new OperationStatus();
+        returnValue.setOperationName(RequestOperationName.UPDATE.name());
+
+        orderService.updateOrder(orderRequest);
+
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return new ResponseEntity<>(returnValue, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/orders/{orderId}")
-    public String deleteOrder(@PathVariable Long orderId) {
-        return "deleteOrder() was called";
+    public ResponseEntity<OperationStatus> deleteOrder(@PathVariable String orderId) {
+        OperationStatus returnValue = new OperationStatus();
+
+        returnValue.setOperationName(RequestOperationName.DELETE.name());
+
+        orderService.deleteOrder(orderId);
+
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return new ResponseEntity<>(returnValue, HttpStatus.OK);
     }
 
     //PRODUCTS
     @PostMapping(path = "/products/add/")
-    public String addProduct(@RequestBody ProductRequest product) {
-        return "addProduct() was called";
+    public ResponseEntity<ProductRest> addProduct(@RequestBody ProductRequest product) {
+        ProductRest productResponse = new ProductRest();
+
+        ProductDto productDto = productService.addProduct(product);
+
+        BeanUtils.copyProperties(productDto, productResponse);
+
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
     @GetMapping(path = "/products")
@@ -127,18 +163,37 @@ public class AdministrationController {
     }
 
     @GetMapping(path = "/products/{productId}")
-    public String getProduct(@PathVariable Long productId) {
-        return "getProduct called";
+    public ResponseEntity<ProductRest> getProduct(@PathVariable String productId) {
+        ProductRest productResponse = new ProductRest();
+        ProductDto productDto = productService.getProduct(productId);
+
+        BeanUtils.copyProperties(productDto, productResponse);
+
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
     @PutMapping(path = "/products/{productId}")
-    public String updateProduct(@PathVariable Long productId, @RequestBody OrderRequest productRequest) {
-        return "updateProduct() was called";
+    public ResponseEntity<OperationStatus> updateProduct(@PathVariable Long productId, @RequestBody ProductRequest productRequest) {
+        OperationStatus returnValue = new OperationStatus();
+        returnValue.setOperationName(RequestOperationName.UPDATE.name());
+
+        productService.updateProduct(productRequest);
+
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return new ResponseEntity<>(returnValue, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/products/{productId}")
-    public String deleteProduct(@PathVariable Long productId) {
+    public ResponseEntity<OperationStatus> deleteProduct(@PathVariable String productId) {
+        OperationStatus returnValue = new OperationStatus();
 
-        return "deleted";
+        returnValue.setOperationName(RequestOperationName.DELETE.name());
+
+        productService.deleteProduct(productId);
+
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return new ResponseEntity<>(returnValue, HttpStatus.OK);
     }
 }

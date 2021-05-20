@@ -10,8 +10,10 @@ import com.codecups.app.security.util.JwtUtil;
 import com.codecups.app.web.model.request.LoginRequest;
 import com.codecups.app.web.model.request.PasswordResetRequest;
 import com.codecups.app.web.model.response.AuthenticationResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,6 +48,7 @@ public class AuthenticationService {
                     .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
                             loginRequest.getPassword()));
         } catch (BadCredentialsException bce) {
+            log.error("IN login() - Incorrect username or password");
             throw new RuntimeException("Bad credentials. Invalid username or password");
         }
 
@@ -57,6 +60,7 @@ public class AuthenticationService {
 
         //TODO Throw exception if user is has not confirmed token after registration
         if (!user.isEnabled()) {
+            log.info("IN login() - User {} is not enabled", user.getEmail());
             throw new RuntimeException("Account not confirmed. Please confirm your registration.");
         }
 
@@ -83,6 +87,7 @@ public class AuthenticationService {
 
         mailSender.send(passwordResetRequest.getEmail(),
                 MailConstant.buildPasswordResetEmail(user.getFirstName(), MailConstant.TOKEN_CONFIRMATION_LINK + token));
+        log.info("IN resetPassword() - Password reset email sent successfully");
 
         return true;
     }

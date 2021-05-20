@@ -9,5 +9,5 @@ import java.util.Optional;
  * Created by Niko on 06 May 2021
  */
 public interface ConfirmationTokenService {
-    void saveConfirmationTokenToken(ConfirmationToken token);
+    void saveConfirmationToken(ConfirmationToken token);
 }

@@ -41,7 +41,7 @@ public class EmailService implements EmailSender {
 
     private MimeMessage prepareMimeMessage(String to, String email) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, "utf-8");
+        MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, MailConstant.EMAIL_ENCODING);
 
         messageHelper.setText(email, true);
         messageHelper.setTo(to);

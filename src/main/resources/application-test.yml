@@ -30,7 +30,7 @@ spring:
 jasypt:
   encryptor:
     algorithm: PBEWITHHMACSHA512ANDAES_256
-    password:
+    password: Secret123!
 server:
   error:
     include-message: always

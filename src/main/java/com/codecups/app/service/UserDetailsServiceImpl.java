@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, email)));
 
-        log.info("IN loadUserByUsername - user with username: {} successfully loaded", email);
+        log.info("IN loadUserByUsername() - user with username: {} successfully loaded", email);
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(),
                 user.isEnabled(),

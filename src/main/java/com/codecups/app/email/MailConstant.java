@@ -9,6 +9,7 @@ public class MailConstant {
     public static final String PASSWORD_RESET_SUBJECT = "CodeCups: Password reset";
     public static final String SENDER = "codecupsbulgaria@gmail.com";
     public static final String TOKEN_CONFIRMATION_LINK = "http://localhost:8080/v0/registration/confirm-registration?token=";
+    public static final String EMAIL_ENCODING = "utf-8";
 
     public static String buildRegistrationEmail(String name, String link) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +

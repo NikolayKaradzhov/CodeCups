@@ -8,5 +8,7 @@ public enum RequestOperationName {
     REGISTER,
     DELETE,
     VERIFY_EMAIL,
-    REQUEST_PASSWORD_RESET
+    REQUEST_PASSWORD_RESET,
+    UPDATE,
+    ADD
 }
