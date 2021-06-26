@@ -1,0 +1,6 @@
+public class CoffeeLover {
+
+    public void DrinkCoffee() {
+        Console.WriteLine("Drinking coffee...");
+    }
+}

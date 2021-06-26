@@ -1,0 +1,33 @@
+<div class="container pt-5">
+  <mat-card class="col-8 mx-auto text-center">
+    <h1 class="display-4 mb-5">Вход</h1>
+
+        <form (ngSubmit)="onSubmit()" action="">
+          <mat-form-field class="full-width">
+            <mat-label>Емейл</mat-label>
+            <input [(ngModel)]="credentials.email"
+                   name="username"
+                   required
+                   type="text"
+                   matInput/>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Парола</mat-label>
+            <input [(ngModel)]="credentials.password"
+                   name="username"
+                   required
+                   type="password"
+                   matInput/>
+
+          </mat-form-field>
+
+          <div class="container text-center">
+            <button type="submit" mat-raised-button color="primary">Login</button>
+            <button type="reset" style="margin-left: 10px" mat-raised-button color="warn">Reset</button>
+          </div>
+
+        </form>
+
+</mat-card>
+</div>

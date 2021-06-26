@@ -3,6 +3,7 @@ package com.codecups.app.service;
 import com.codecups.app.email.EmailSender;
 import com.codecups.app.email.EmailValidator;
 import com.codecups.app.email.MailConstant;
+import com.codecups.app.model.Address;
 import com.codecups.app.model.ConfirmationToken;
 import com.codecups.app.model.User;
 import com.codecups.app.repository.UserRepository;
@@ -44,10 +45,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new IllegalStateException("email not valid");
         }
 
-        String token = signUpUser(new User(registerRequest.getFirstName(),
-                registerRequest.getLastName(),
-                registerRequest.getEmail(),
-                registerRequest.getPassword()));
+        String token = signUpUser(registerRequest);
 
         mailSender.send(registerRequest.getEmail(),
                 MailConstant.buildRegistrationEmail(registerRequest.getFirstName(), MailConstant.TOKEN_CONFIRMATION_LINK + token));
@@ -55,9 +53,9 @@ public class RegistrationServiceImpl implements RegistrationService {
         return token;
     }
 
-    private String signUpUser(User user) {
+    private String signUpUser(RegisterRequest registerRequest) {
         boolean isUserExists = userRepository
-                .findByEmail(user.getEmail())
+                .findByEmail(registerRequest.getEmail())
                 .isPresent();
 
         if (isUserExists) {
@@ -67,12 +65,25 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
 
         String encodedPassword = bCryptPasswordEncoder
-                .encode(user.getPassword());
+                .encode(registerRequest.getPassword());
 
-        String publicUserId = publicIdGenerator.generateUserId(30);
+        String publicUserId = publicIdGenerator.generateRandomString(30);
+        User user = new User();
         user.setUserId(publicUserId);
+        user.setEmail(registerRequest.getEmail());
         user.setPassword(encodedPassword);
+        user.setFirstName(registerRequest.getFirstName());
+        user.setLastName(registerRequest.getLastName());
         user.setCreatedAt(LocalDateTime.now());
+
+//        Address address = new Address();
+//        address.setAddressId(publicIdGenerator.generateRandomString(30));
+//        address.setCountry(registerRequest.getAddress().getCountry());
+//        address.setCity(registerRequest.getAddress().getCity());
+//        address.setStreetName(registerRequest.getAddress().getStreet());
+//        address.setPostalCode(registerRequest.getAddress().getPostalCode());
+//        address.setStreetNumber(registerRequest.getAddress().getStreetNumber());
+//        user.setAddress(address);
 
         userRepository.save(user);
 

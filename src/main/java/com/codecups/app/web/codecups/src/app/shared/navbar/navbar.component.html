@@ -1,0 +1,43 @@
+<div id="mainNav">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: cadetblue">
+  <div class="container-fluid" style="margin: 1em">
+    <a class="navbar-brand" routerLink="/v0/home">Code Cups</a>
+    <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="navbarColor03" style="">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navButtons">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/v0/home" routerLinkActive="active">Начало</a>
+        </li>
+        <li ngbDropdown class="nav-item dropdown">
+          <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" >
+            Продукти
+          </a>
+          <div ngbDropdownMenu id="testD" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="background-color: cadetblue; ">
+            <h6 class="dropdown-header" style="color: white">Категории</h6>
+            <hr>
+            <a class="dropdown-item" routerLink="/v0/products/cups" style="color: white">Чаши</a>
+            <a class="dropdown-item" routerLink="/v0/products/crypto" style="color:white;">Крипто</a>
+
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/v0/contacts">Контакти</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/v0/about">За Нас</a>
+        </li>
+
+      </ul>
+      <div id="seventh" class="buttonBox">
+        <button *ngIf="!isLoggedIn" routerLink="/v0/login-test">Login</button>
+        <button *ngIf="isLoggedIn">User</button>
+        <button *ngIf="isLoggedIn" (click)="logoutUser()">Logout</button>
+      </div>
+
+    </div>
+  </div>
+</nav>
+</div>

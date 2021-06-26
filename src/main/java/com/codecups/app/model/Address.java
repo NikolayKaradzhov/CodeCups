@@ -2,6 +2,7 @@ package com.codecups.app.model;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @Entity (name = "addresses")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Address implements Serializable {
 
     @Getter(AccessLevel.NONE)
@@ -38,8 +40,11 @@ public class Address implements Serializable {
     private String streetName;
 
     @Column(length = 4, nullable = false)
+    private int streetNumber;
+
+    @Column(length = 4, nullable = false)
     private String postalCode;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 10)
     private String type;
 }

@@ -1,0 +1,359 @@
+<div class="text-lg-center"><p style="font-size: 55px"> Препоръчани продукти</p></div>
+
+<div class="container bootdey">
+  <div class="row">
+    <!-- Product Item -->
+    <div class="product-grid col-xs-12 col-sm-6 col-md-3">
+      <div class="product-item">
+        <div class="image">
+          <a (click)="triggerModal(modalData1)"><img src="/assets/images/cup1.jpg" alt="Product 1"></a>
+        </div>
+        <div class="caption">
+          <div class="name text-center">
+            <a style="text-transform: capitalize"><b>java чаша</b></a>
+          </div>
+          <div class="price">
+            <span class="price-new">9.99 лв.</span>
+          </div>
+          <div class="btn-ground text-center">
+            <button type="button" class="btn btn-primary">Добави в количката</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Product Item -->
+
+    <!-- Product Item -->
+    <div class="product-grid col-xs-12 col-sm-6 col-md-3">
+      <div class="product-item">
+        <div class="sale-tag">
+          <span>SALE</span>
+        </div>
+        <div class="image">
+          <a (click)="triggerModal(modalData2)"><img src="/assets/images/cup3.jpg" alt="Product 2"></a>
+        </div>
+        <div class="caption">
+          <div class="name text-center">
+            <a style="text-transform: capitalize"><b>.net чаша</b></a>
+          </div>
+          <div class="price">
+            <span class="price-new">8.99 лв.</span>
+          </div>
+          <div class="btn-ground text-center">
+            <button type="button" class="btn btn-primary">Добави в количката</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Product Item -->
+
+    <!-- Product Item -->
+    <div class="product-grid col-xs-12 col-sm-6 col-md-3">
+      <div class="product-item">
+        <div class="image">
+          <a (click)="triggerModal(modalData3)"><img src="/assets/images/cup2.jpg" alt="Product 3"></a>
+        </div>
+        <div class="caption">
+          <div class="name text-center">
+            <a style="text-transform: capitalize"><b> Javascript чаша</b></a>
+          </div>
+          <div class="price">
+            <span class="price-new">9.99 лв.</span>
+          </div>
+          <div class="btn-ground text-center">
+            <button type="button" class="btn btn-primary">Добави в количката</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Product Item -->
+
+    <!-- Product Item -->
+    <div class="product-grid col-xs-12 col-sm-6 col-md-3" id="portfolioModal1">
+      <div class="product-item">
+        <div class="sale-tag">
+          <span>SALE</span>
+        </div>
+        <div class="image">
+          <a (click)="triggerModal(modalData4)"><img src="/assets/images/cup4.jpg" alt="Product 4"></a>
+        </div>
+        <div class="caption">
+          <div class="name text-center">
+            <a style="text-transform: capitalize"><b>python чаша</b></a>
+          </div>
+          <div class="price">
+            <span class="price-new">8.99 лв.</span>
+          </div>
+          <div class="btn-ground text-center">
+            <button type="button" class="btn btn-primary">Добави в количката</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #modalData1 let-modal>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-5">
+        <div class="img-fluid">
+          <img style="width: 200px" src="/assets/images/cup1.jpg">
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <h2 class="h2-responsive product-name">
+          <strong>Java Чаша</strong>
+        </h2>
+        <h4 class="h4-responsive">
+              <span class="green-text">
+                <strong>9.99лв.</strong>
+              </span>
+          <span class="grey-text">
+                <small>
+                  <s>13.99лв.</s>
+                </small>
+              </span>
+        </h4>
+        <div class="card">
+
+          <div id="collapseOne1">
+            <div class="card-body">
+              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+              squid. 3
+              wolf moon officia aute,
+              non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+
+              <select class="md-form mdb-select colorful-select dropdown-primary">
+                <option value="" disabled selected>Количество</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="3">4</option>
+                <option value="3">5</option>
+              </select>
+
+            </div>
+
+            <div class="col-md-6">
+
+              <button class="btn btn-primary">Добави в количка
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.Add to CartItem -->
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Затвори</button>
+  </div>
+</ng-template>
+
+
+<ng-template #modalData2 let-modal>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-5">
+        <div class="img-fluid">
+          <img style="width: 200px" src="/assets/images/cup3.jpg">
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <h2 class="h2-responsive product-name">
+          <strong>.Net Чаша</strong>
+        </h2>
+        <h4 class="h4-responsive">
+              <span class="green-text">
+                <strong>8.99лв.</strong>
+              </span>
+          <span class="grey-text">
+                <small>
+                  <s>12.99лв.</s>
+                </small>
+              </span>
+        </h4>
+        <div class="card">
+
+          <div id="collapseOne1">
+            <div class="card-body">
+              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+              squid. 3
+              wolf moon officia aute,
+              non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+
+              <select class="md-form mdb-select colorful-select dropdown-primary">
+                <option value="" disabled selected>Количество</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="3">4</option>
+                <option value="3">5</option>
+              </select>
+
+            </div>
+
+            <div class="col-md-6">
+
+              <button class="btn btn-primary">Добави в количка
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.Add to CartItem -->
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Затвори</button>
+  </div>
+</ng-template>
+
+<ng-template #modalData3 let-modal>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-5">
+        <div class="img-fluid">
+          <img style="width: 200px" src="/assets/images/cup2.jpg">
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <h2 class="h2-responsive product-name">
+          <strong>Javascript Чаша</strong>
+        </h2>
+        <h4 class="h4-responsive">
+              <span class="green-text">
+                <strong>9.99лв.</strong>
+              </span>
+          <span class="grey-text">
+                <small>
+                  <s>12.99лв.</s>
+                </small>
+              </span>
+        </h4>
+        <div class="card">
+
+          <div id="collapseOne1">
+            <div class="card-body">
+              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+              squid. 3
+              wolf moon officia aute,
+              non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+
+              <select class="md-form mdb-select colorful-select dropdown-primary">
+                <option value="" disabled selected>Количество</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="3">4</option>
+                <option value="3">5</option>
+              </select>
+
+            </div>
+
+            <div class="col-md-6">
+
+              <button class="btn btn-primary">Добави в количка
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.Add to CartItem -->
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Затвори</button>
+  </div>
+</ng-template>
+
+<ng-template #modalData4 let-modal>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-5">
+        <div class="img-fluid">
+          <img style="width: 200px" src="/assets/images/cup4.jpg">
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <h2 class="h2-responsive product-name">
+          <strong>Python Чаша</strong>
+        </h2>
+        <h4 class="h4-responsive">
+              <span class="green-text">
+                <strong>8.99лв.</strong>
+              </span>
+          <span class="grey-text">
+                <small>
+                  <s>12.99лв.</s>
+                </small>
+              </span>
+        </h4>
+        <div class="card">
+
+          <div id="collapseOne1">
+            <div class="card-body">
+              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+              squid. 3
+              wolf moon officia aute,
+              non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+
+              <select class="md-form mdb-select colorful-select dropdown-primary">
+                <option value="" disabled selected>Количество</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="3">4</option>
+                <option value="3">5</option>
+              </select>
+
+            </div>
+
+            <div class="col-md-6">
+
+              <button class="btn btn-primary">Добави в количка
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.Add to CartItem -->
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Затвори</button>
+  </div>
+</ng-template>
+
+
+

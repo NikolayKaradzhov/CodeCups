@@ -9,6 +9,8 @@ import com.codecups.app.web.model.request.OrderRequest;
 import lombok.AllArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.dom4j.rule.Mode;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,10 +39,10 @@ public class OrderServiceImpl implements OrderService {
 
         Page<Order> productPage = orderRepository.findAll(pageableRequest);
         List<Order> orders = productPage.getContent();
+        ModelMapper modelMapper = new ModelMapper();
 
         for (Order order : orders) {
-            OrderDto orderDto = new OrderDto();
-            BeanUtils.copyProperties(order, orderDto);
+            OrderDto orderDto = modelMapper.map(order, OrderDto.class);
             returnedOrders.add(orderDto);
         }
 
@@ -53,9 +55,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto getOrder(String orderId) {
         Order order = orderRepository.findByOrderId(orderId);
 
-        OrderDto orderDto = new OrderDto();
-
-        BeanUtils.copyProperties(order, orderDto);
+        OrderDto orderDto = new ModelMapper().map(order, OrderDto.class);
 
         log.info("IN getOrder() - order with id {} loaded successfully", orderId);
 

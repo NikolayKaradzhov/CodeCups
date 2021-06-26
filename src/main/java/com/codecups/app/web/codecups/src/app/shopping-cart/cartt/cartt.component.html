@@ -1,0 +1,16 @@
+<div class="card-header"><strong>Количка</strong>
+<div *ngIf="cartItems.length === 0" class="alert alert-info">Вашата количка е празна</div>
+
+<ul *ngIf="cartItems.length > 0" class="list-group">
+  <li class="list-group-item" *ngFor="let cartItem of cartItems">
+    <app-cart-item [cartItem]="cartItem"></app-cart-item>
+  </li>
+
+  <li class="list-group-item active">
+    <strong>Total: {{ cartTotal | currency: 'BGN'}}</strong>
+  </li>
+
+</ul>
+
+</div>
+

@@ -6,9 +6,9 @@ import com.codecups.app.repository.UserRepository;
 import com.codecups.app.service.base.UserService;
 
 import lombok.AllArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -41,16 +41,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByUserId(String userId) {
-        UserDto returnedUser = new UserDto();
-
         User user = userRepository
                 .findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found."));
 
         log.info("IN getUserByUserId() - user with {} id found", user.getEmail());
 
-        BeanUtils.copyProperties(user, returnedUser);
-        return returnedUser;
+        return new ModelMapper().map(user, UserDto.class);
     }
 
     @Override
@@ -71,10 +68,10 @@ public class UserServiceImpl implements UserService {
 
         Page<User> usersPage = userRepository.findAll(pageableRequest);
         List<User> users = usersPage.getContent();
+        ModelMapper modelMapper = new ModelMapper();
 
         for (User user : users) {
-            UserDto userDto = new UserDto();
-            BeanUtils.copyProperties(user, userDto);
+            UserDto userDto = modelMapper.map(user, UserDto.class);
             returnedUsers.add(userDto);
         }
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * Copyright CodeCups
@@ -24,4 +25,6 @@ public class UserDto implements Serializable {
     private String encryptedPassword;
     private boolean enabled;
     private boolean locked;
+    private LocalDateTime createdAt;
+    private AddressDto address;
 }

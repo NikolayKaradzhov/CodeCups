@@ -10,13 +10,15 @@ import com.codecups.app.web.enums.RequestOperationName;
 import com.codecups.app.web.enums.RequestOperationStatus;
 import com.codecups.app.web.model.request.OrderRequest;
 import com.codecups.app.web.model.request.ProductRequest;
-
 import com.codecups.app.web.model.response.OperationStatus;
 import com.codecups.app.web.model.response.OrderRest;
 import com.codecups.app.web.model.response.ProductRest;
 import com.codecups.app.web.model.response.UserRest;
+
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
+
+import org.modelmapper.ModelMapper;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,11 +46,11 @@ public class AdministrationController {
                                       @RequestParam (value = "limit", defaultValue = "25") int limit) {
         List<UserRest> returnedUsers = new ArrayList<>();
         List<UserDto> users = userService.getUsers(page, limit);
+        ModelMapper modelMapper = new ModelMapper();
 
         for (UserDto userDto : users) {
-            UserRest userModel = new UserRest();
-            BeanUtils.copyProperties(userDto, userModel);
-            returnedUsers.add(userModel);
+            UserRest userRest = modelMapper.map(userDto, UserRest.class);
+            returnedUsers.add(userRest);
         }
 
         return new ResponseEntity<>(returnedUsers, HttpStatus.OK);
@@ -56,18 +58,13 @@ public class AdministrationController {
 
     @GetMapping(path = "/users/{userId}")
     public ResponseEntity<UserRest> getUser(@PathVariable (name = "userId") String userId) {
-        UserRest returnedUser = new UserRest();
 
         UserDto userDto = userService.getUserByUserId(userId);
-        BeanUtils.copyProperties(userDto, returnedUser);
+        ModelMapper modelMapper = new ModelMapper();
+        UserRest returnedUser = modelMapper.map(userDto, UserRest.class);
 
         return new ResponseEntity<>(returnedUser, HttpStatus.OK);
     }
-
-//    @PutMapping(path = "/users/{userId}")
-//    public String updateUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
-//        return "updateUser() was called";
-//    }
 
     @DeleteMapping(path = "/users/{userId}")
     public ResponseEntity<OperationStatus> deleteUser(@PathVariable String userId) {
@@ -89,11 +86,11 @@ public class AdministrationController {
 
         List<OrderRest> returnedOrders = new ArrayList<>();
         List<OrderDto> orders = orderService.getOrders(page, limit);
+        ModelMapper modelMapper = new ModelMapper();
 
         for (OrderDto orderDto : orders) {
-            OrderRest order = new OrderRest();
-            BeanUtils.copyProperties(orderDto, order);
-            returnedOrders.add(order);
+            OrderRest orderRest = modelMapper.map(orderDto, OrderRest.class);
+            returnedOrders.add(orderRest);
         }
 
         return new ResponseEntity<>(returnedOrders, HttpStatus.OK);
@@ -101,10 +98,8 @@ public class AdministrationController {
 
     @GetMapping(path = "/orders/{orderId}")
     public ResponseEntity<OrderRest> getOrder(@PathVariable String orderId) {
-        OrderRest returnedOrder = new OrderRest();
         OrderDto orderDto = orderService.getOrder(orderId);
-
-        BeanUtils.copyProperties(orderDto, returnedOrder);
+        OrderRest returnedOrder = new ModelMapper().map(orderDto, OrderRest.class);
 
         return new ResponseEntity<>(returnedOrder, HttpStatus.OK);
     }
@@ -137,13 +132,11 @@ public class AdministrationController {
     //PRODUCTS
     @PostMapping(path = "/products/add/")
     public ResponseEntity<ProductRest> addProduct(@RequestBody ProductRequest product) {
-        ProductRest productResponse = new ProductRest();
-
         ProductDto productDto = productService.addProduct(product);
 
-        BeanUtils.copyProperties(productDto, productResponse);
+        ProductRest productRest = new ModelMapper().map(productDto, ProductRest.class);
 
-        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+        return new ResponseEntity<>(productRest, HttpStatus.OK);
     }
 
     @GetMapping(path = "/products")
@@ -152,11 +145,11 @@ public class AdministrationController {
 
         List<ProductRest> returnedProducts = new ArrayList<>();
         List<ProductDto> products = productService.getProducts(page, limit);
+        ModelMapper modelMapper = new ModelMapper();
 
         for (ProductDto productDto : products) {
-            ProductRest productResponseModel = new ProductRest();
-            BeanUtils.copyProperties(productDto, productResponseModel);
-            returnedProducts.add(productResponseModel);
+            ProductRest productRest = modelMapper.map(productDto, ProductRest.class);
+            returnedProducts.add(productRest);
         }
 
         return new ResponseEntity<>(returnedProducts, HttpStatus.OK);
@@ -164,12 +157,10 @@ public class AdministrationController {
 
     @GetMapping(path = "/products/{productId}")
     public ResponseEntity<ProductRest> getProduct(@PathVariable String productId) {
-        ProductRest productResponse = new ProductRest();
         ProductDto productDto = productService.getProduct(productId);
+        ProductRest productRest = new ModelMapper().map(productDto, ProductRest.class);
 
-        BeanUtils.copyProperties(productDto, productResponse);
-
-        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+        return new ResponseEntity<>(productRest, HttpStatus.OK);
     }
 
     @PutMapping(path = "/products/{productId}")

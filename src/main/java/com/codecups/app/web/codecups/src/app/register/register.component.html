@@ -1,0 +1,61 @@
+<div class="container pt-5">
+  <mat-card class="col-8 mx-auto text-center">
+    <h1 class="display-4 mb-5">Регистрация</h1>
+    <form [formGroup]="formRegister" (submit)="submitRegistration()">
+
+      <!-- Име -->
+      <mat-form-field class="col-5 mt-3 mx-auto">
+        <mat-label>Име</mat-label>
+        <input
+          type="text"
+          matInput/>
+      </mat-form-field>
+
+      <br/>
+
+      <!-- Фамилия -->
+      <mat-form-field class="col-5 mt-3 mx-auto">
+        <mat-label>Фамилия</mat-label>
+        <input
+          type="text"
+          matInput/>
+      </mat-form-field>
+
+      <br/>
+
+      <!-- Email -->
+      <mat-form-field class="col-5 mt-3 mx-auto">
+        <mat-label>Имейл</mat-label>
+        <input
+          #success
+          type="email"
+          matInput
+          placeholder="напр. mail@gmail.com"
+        />
+      </mat-form-field>
+
+      <br/>
+
+      <!-- Парола -->
+      <mat-form-field class="col-5 mt-3 mx-auto">
+        <mat-label>Парола</mat-label>
+        <input type="password" matInput/>
+      </mat-form-field>
+
+      <br/>
+
+      <button
+        (click)="openSnackBar()"
+        mat-flat-button
+        color="primary"
+        type="submit"
+        class="col-3 mt-2 mb-3">Submit
+      </button>
+
+      <br/>
+
+      <small >New to CodeCups? Register</small>
+
+    </form>
+  </mat-card>
+</div>
